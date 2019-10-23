@@ -18,5 +18,9 @@
   "homepage": "https://github.com/MattMan569/nodejs-task-manager#readme",
   "dependencies": {
     "mongodb": "^3.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^6.5.1",
+    "eslint-config-google": "^0.14.0"
   }
 }
