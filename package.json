@@ -18,7 +18,8 @@
   "homepage": "https://github.com/MattMan569/nodejs-task-manager#readme",
   "dependencies": {
     "mongodb": "^3.3.3",
-    "mongoose": "^5.7.7"
+    "mongoose": "^5.7.7",
+    "validator": "^11.1.0"
   },
   "devDependencies": {
     "eslint": "^6.5.1",
