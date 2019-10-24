@@ -17,12 +17,14 @@
   },
   "homepage": "https://github.com/MattMan569/nodejs-task-manager#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "mongodb": "^3.3.3",
     "mongoose": "^5.7.7",
     "validator": "^11.1.0"
   },
   "devDependencies": {
     "eslint": "^6.5.1",
-    "eslint-config-google": "^0.14.0"
+    "eslint-config-google": "^0.14.0",
+    "nodemon": "^1.19.4"
   }
 }
