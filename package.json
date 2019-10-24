@@ -4,7 +4,9 @@
   "description": "Task manager application using NodeJS and MongoDB",
   "main": "index.js",
   "scripts": {
-    "server": "C:/Users/matth/mongodb/bin/mongod.exe --dbpath=C:/Users/matth/mongodb-data"
+    "server": "C:/Users/matth/mongodb/bin/mongod.exe --dbpath=C:/Users/matth/mongodb-data",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "repository": {
     "type": "git",
