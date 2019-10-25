@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 require('./db/mongoose');
 const User = require('./models/user');
 const Task = require('./models/task');
@@ -15,6 +16,33 @@ app.post('/users', (req, res) => {
         res.status(201).send(user);
     }).catch((e) => {
         res.status(400).send(e);
+    });
+});
+
+app.get('/users', (req, res) => {
+    User.find({}).then((users) => {
+        res.send(users);
+    }).catch((e) => {
+        res.status(500).send();
+    });
+});
+
+app.get('/users/:id', (req, res) => {
+    const _id = req.params.id;
+
+    // Properly formatted ids must be a length of 12
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        res.status(400).send();
+    }
+
+    User.findById(_id).then((user) => {
+        if (!user) {
+            return res.status(404).send();
+        }
+
+        res.send(user);
+    }).catch((e) => {
+        res.status(500).send(e);
     });
 });
 
