@@ -9,85 +9,94 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.post('/users', (req, res) => {
+app.post('/users', async (req, res) => {
     const user = new User(req.body);
 
-    user.save().then(() => {
+    try {
+        await user.save();
         res.status(201).send(user);
-    }).catch((e) => {
+    } catch (e) {
         res.status(400).send(e);
-    });
+    }
 });
 
-app.get('/users', (req, res) => {
-    User.find({}).then((users) => {
+app.get('/users', async (req, res) => {
+    try {
+        const users = await User.find({});
+
         if (!users) {
             return res.status(404).send();
         }
 
         res.send(users);
-    }).catch((e) => {
+    } catch (e) {
         res.status(500).send();
-    });
+    }
 });
 
-app.get('/users/:id', (req, res) => {
+app.get('/users/:id', async (req, res) => {
     const _id = req.params.id;
 
-    // Properly formatted ids must be a length of 12
     if (!mongoose.Types.ObjectId.isValid(_id)) {
         res.status(400).send();
     }
 
-    User.findById(_id).then((user) => {
+    try {
+        const user = await User.findById(_id);
+
         if (!user) {
             return res.status(404).send();
         }
 
         res.send(user);
-    }).catch((e) => {
+    } catch (e) {
         res.status(500).send(e);
-    });
+    }
 });
 
-app.post('/tasks', (req, res) => {
+app.post('/tasks', async (req, res) => {
     const task = new Task(req.body);
 
-    task.save().then(() => {
+    try {
+        await task.save();
         res.status(201).send(task);
-    }).catch((e) => {
+    } catch (e) {
         res.status(400).send(e);
-    });
+    }
 });
 
-app.get('/tasks', (req, res) => {
-    Task.find({}).then((tasks) => {
+app.get('/tasks', async (req, res) => {
+    const tasks = await Task.find({});
+
+    try {
         if (!tasks) {
-            res.status(404).send();
+            return res.status(404).send();
         }
 
         res.send(tasks);
-    }).catch((e) => {
+    } catch (e) {
         res.status(500).send();
-    });
+    }
 });
 
-app.get('/tasks/:id', (req, res) => {
-    _id = req.params.id;
+app.get('/tasks/:id', async (req, res) => {
+    const _id = req.params.id;
 
     if (!mongoose.Types.ObjectId.isValid(_id)) {
         res.status(400).send();
     }
 
-    Task.findById(_id).then((task) => {
+    try {
+        const task = await Task.findById(_id);
+
         if (!task) {
-            res.status(404).send();
+            return res.status(404).send();
         }
 
         res.send(task);
-    }).catch((e) => {
-        res.status(500).send();
-    });
+    } catch (e) {
+        res.status(500).send(e);
+    }
 });
 
 app.listen(port, () => {
