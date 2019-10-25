@@ -21,6 +21,10 @@ app.post('/users', (req, res) => {
 
 app.get('/users', (req, res) => {
     User.find({}).then((users) => {
+        if (!users) {
+            return res.status(404).send();
+        }
+
         res.send(users);
     }).catch((e) => {
         res.status(500).send();
@@ -53,6 +57,36 @@ app.post('/tasks', (req, res) => {
         res.status(201).send(task);
     }).catch((e) => {
         res.status(400).send(e);
+    });
+});
+
+app.get('/tasks', (req, res) => {
+    Task.find({}).then((tasks) => {
+        if (!tasks) {
+            res.status(404).send();
+        }
+
+        res.send(tasks);
+    }).catch((e) => {
+        res.status(500).send();
+    });
+});
+
+app.get('/tasks/:id', (req, res) => {
+    _id = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        res.status(400).send();
+    }
+
+    Task.findById(_id).then((task) => {
+        if (!task) {
+            res.status(404).send();
+        }
+
+        res.send(task);
+    }).catch((e) => {
+        res.status(500).send();
     });
 });
 
