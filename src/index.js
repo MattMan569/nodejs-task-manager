@@ -38,7 +38,7 @@ app.get('/users/:id', async (req, res) => {
     const _id = req.params.id;
 
     if (!mongoose.Types.ObjectId.isValid(_id)) {
-        res.status(400).send();
+        return res.status(400).send({error: 'Invalid id'});
     }
 
     try {
@@ -51,6 +51,39 @@ app.get('/users/:id', async (req, res) => {
         res.send(user);
     } catch (e) {
         res.status(500).send(e);
+    }
+});
+
+app.patch('/users/:id', async (req, res) => {
+    const _id = req.params.id;
+    const body = req.body;
+    const allowedUpdates = ['name', 'email', 'password', 'age'];
+
+    const updates = Object.keys(body);
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+
+    if (!isValidOperation) {
+        return res.status(400).send({error: 'Invalid update field'});
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(400).send({error: 'Invalid id'});
+    }
+
+    try {
+        const user = await User.findByIdAndUpdate(_id, body, {new: true, runValidators: true});
+
+        if (!user) {
+            return res.status(404).send();
+        }
+
+        res.status(200).send(user);
+    } catch (e) {
+        if (e._message == 'Validation failed') {
+            res.status(400).send(e);
+        } else {
+            res.status(500).send(e);
+        }
     }
 });
 
@@ -83,7 +116,7 @@ app.get('/tasks/:id', async (req, res) => {
     const _id = req.params.id;
 
     if (!mongoose.Types.ObjectId.isValid(_id)) {
-        res.status(400).send();
+        return res.status(400).send({error: 'Invalid id'});
     }
 
     try {
