@@ -76,13 +76,33 @@ app.patch('/users/:id', async (req, res) => {
             return res.status(404).send();
         }
 
-        res.status(200).send(user);
+        res.send(user);
     } catch (e) {
         if (e._message == 'Validation failed') {
             res.status(400).send(e);
         } else {
             res.status(500).send(e);
         }
+    }
+});
+
+app.delete('/users/:id', async (req, res) => {
+    const _id = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(400).send({error: 'Invalid id'});
+    }
+
+    try {
+        const user = await User.findByIdAndDelete(_id);
+
+        if (!user) {
+            return res.status(404).send();
+        }
+
+        res.send(user);
+    } catch (e) {
+        res.status(500).send();
     }
 });
 
@@ -153,13 +173,33 @@ app.patch('/tasks/:id', async (req, res) => {
             return res.status(404).send();
         }
 
-        res.status(200).send(task);
+        res.send(task);
     } catch (e) {
         if (e._message == 'Validation failed') {
             res.status(400).send(e);
         } else {
             res.status(500).send(e);
         }
+    }
+});
+
+app.delete('/tasks/:id', async (req, res) => {
+    const _id = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(400).send({error: 'Invalid id'});
+    }
+
+    try {
+        const task = await Task.findByIdAndDelete(_id);
+
+        if (!task) {
+            return res.status(404).send();
+        }
+
+        res.send(task);
+    } catch (e) {
+        res.status(500).send();
     }
 });
 
