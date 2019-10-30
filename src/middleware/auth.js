@@ -11,8 +11,9 @@ const auth = async (req, res, next) => {
             throw new Error();
         }
 
-        // Add the found user onto the request
+        // Add the found user and their token onto the request
         req.user = user;
+        req.token = token;
         next();
     } catch (e) {
         res.status(401).send({error: 'Please authenticate'});
