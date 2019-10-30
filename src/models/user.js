@@ -49,6 +49,13 @@ const userSchema = new mongoose.Schema({
     }],
 });
 
+// Virtual property - setup relation between tasks and users
+userSchema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner',
+});
+
 // Implicitly called whenever the user is sent to the requester,
 // removing all private data before doing so.
 userSchema.methods.toJSON = function() {
