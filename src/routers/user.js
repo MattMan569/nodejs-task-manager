@@ -56,26 +56,6 @@ router.get('/users/me', auth, async (req, res) => {
     res.send(req.user);
 });
 
-router.get('/users/:id', async (req, res) => {
-    const _id = req.params.id;
-
-    if (!mongoose.Types.ObjectId.isValid(_id)) {
-        return res.status(400).send({error: 'Invalid id'});
-    }
-
-    try {
-        const user = await User.findById(_id);
-
-        if (!user) {
-            return res.status(404).send();
-        }
-
-        res.send(user);
-    } catch (e) {
-        res.status(500).send(e);
-    }
-});
-
 router.patch('/users/:id', async (req, res) => {
     const _id = req.params.id;
     const body = req.body;
