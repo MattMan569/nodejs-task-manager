@@ -49,6 +49,16 @@ const userSchema = new mongoose.Schema({
     }],
 });
 
+// Implicitly called whenever the user is sent to the requester,
+// removing all private data before doing so.
+userSchema.methods.toJSON = function() {
+    const user = this.toObject();
+    delete user.password;
+    delete user.tokens;
+
+    return user;
+};
+
 userSchema.methods.generateAuthToken = async function() {
     const token = jwt.sign({_id: this._id.toString()}, process.env.UdemyNodeJsJwtSecret);
 
