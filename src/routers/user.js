@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const User = require('../models/user');
 const auth = require('../middleware/auth');
 
@@ -56,31 +55,20 @@ router.get('/users/me', auth, async (req, res) => {
     res.send(req.user);
 });
 
-router.patch('/users/:id', async (req, res) => {
-    const _id = req.params.id;
+router.patch('/users/me', auth, async (req, res) => {
+    const user = req.user;
     const body = req.body;
     const allowedUpdates = ['name', 'email', 'password', 'age'];
     const updates = Object.keys(body);
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
-
-    if (!mongoose.Types.ObjectId.isValid(_id)) {
-        return res.status(400).send({error: 'Invalid id'});
-    }
 
     if (!isValidOperation) {
         return res.status(400).send({error: 'Invalid update field'});
     }
 
     try {
-        const user = await User.findById(_id);
         updates.forEach((update) => user[update] = body[update]);
         await user.save();
-
-        // const user = await User.findByIdAndUpdate(_id, body, {new: true, runValidators: true});
-
-        if (!user) {
-            return res.status(404).send();
-        }
 
         res.send(user);
     } catch (e) {
