@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const sharp = require('sharp');
 const User = require('../models/user');
 const auth = require('../middleware/auth');
 
@@ -105,8 +106,10 @@ router.delete('/users/me', auth, async (req, res) => {
     }
 });
 
+// Crop the image to 250px x 250px then save it to the db
 router.post('/users/me/avatar', [auth, upload.single('avatar')], async (req, res) => {
-    req.user.avatar = req.file.buffer;
+    req.user.avatar = await sharp(req.file.buffer).png().resize(250, 250).toBuffer();
+
     await req.user.save();
     res.send();
 }, (error, req, res, next) => {
@@ -121,8 +124,7 @@ router.get('/users/:id/avatar', async (req, res) => {
             throw new Error();
         }
 
-        res.set('Content-Type', 'image/jpg').send(user.avatar);
-        // res.send(user.avatar);
+        res.set('Content-Type', 'image/png').send(user.avatar);
     } catch (e) {
         res.status(404).send();
     }
