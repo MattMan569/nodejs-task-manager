@@ -68,6 +68,7 @@ userSchema.methods.toJSON = function() {
     const user = this.toObject();
     delete user.password;
     delete user.tokens;
+    delete user.avatar; // Do not include the image as it may be a large file
 
     return user;
 };
