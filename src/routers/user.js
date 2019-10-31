@@ -12,7 +12,7 @@ const upload = multer({
     },
     fileFilter(req, file, callback) {
         if (!file.originalname.match(/\.(jpe?g|png|gif|bmp|tiff?)$/)) {
-            callback(new Error('File must be an image'));
+            callback(new Error('File must be an image (.jpeg, .jpg, .png, .gif, .bmp, .tiff, .tif'));
         }
 
         callback(undefined, true);
@@ -68,6 +68,8 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 
 router.post('/users/me/avatar', [auth, upload.single('avatar')], async (req, res) => {
     res.send();
+}, (error, req, res, next) => {
+    res.status(400).send({error: error.message});
 });
 
 router.get('/users/me', auth, async (req, res) => {
