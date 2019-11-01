@@ -1,6 +1,6 @@
 const sgMail = require('@sendgrid/mail');
 
-sgMail.setApiKey(process.env.UdemyNodeJsTaskAppApiKey);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const fromEmail = 'matthewpolsom@hotmail.com';
 
