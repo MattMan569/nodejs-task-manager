@@ -6,7 +6,7 @@
   "scripts": {
     "db": "C:/Users/matth/mongodb/bin/mongod.exe --dbpath=C:/Users/matth/mongodb-data",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "env-cmd -f ./config/dev.env nodemon src/index.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,7 @@
     "validator": "^11.1.0"
   },
   "devDependencies": {
+    "env-cmd": "^10.0.1",
     "eslint": "^6.5.1",
     "eslint-config-google": "^0.14.0",
     "nodemon": "^1.19.4"
