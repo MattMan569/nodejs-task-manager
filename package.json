@@ -6,7 +6,8 @@
   "scripts": {
     "db": "C:/Users/matth/mongodb/bin/mongod.exe --dbpath=C:/Users/matth/mongodb-data",
     "start": "node src/index.js",
-    "dev": "env-cmd -f ./config/dev.env nodemon src/index.js"
+    "dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
