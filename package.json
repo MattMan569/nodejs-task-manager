@@ -39,6 +39,7 @@
     "eslint": "^6.5.1",
     "eslint-config-google": "^0.14.0",
     "jest": "^24.9.0",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "supertest": "^4.0.2"
   }
 }
