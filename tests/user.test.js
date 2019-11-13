@@ -98,3 +98,34 @@ test('Do not delete unauthenticated user\'s account', async () => {
         .send()
         .expect(401);
 });
+
+test('Upload avatar image', async () => {
+    await request(app)
+        .post('/users/me/avatar')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .attach('avatar', 'tests/fixtures/profile-pic.jpg')
+        .expect(200);
+
+    // Assert that the avatar field is a Buffer
+    const user = await User.findById(userOneId);
+    expect(user.avatar).toEqual(expect.any(Buffer));
+});
+
+test('Update valid user field', async () => {
+    await request(app)
+        .patch('/users/me')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .send({name: 'User One Updated'})
+        .expect(200);
+
+    const user = await User.findById(userOneId);
+    expect(user.name).toBe('User One Updated');
+});
+
+test('Do not update invalid user field', async () => {
+    await request(app)
+        .patch('/users/me')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .send({location: 'Regina'})
+        .expect(400);
+});
